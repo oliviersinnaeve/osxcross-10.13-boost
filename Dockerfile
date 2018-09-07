@@ -32,14 +32,11 @@ RUN ln -f -s /usr/bin/clang-3.8 /usr/bin/clang	&& ln -f -s /usr/bin/clang++-3.8 
 # ran into this problem when the images wouldn't run on my 2013-era Macbook
 # Pro.  As such, we remove this flag entirely.
 ENV OSXCROSS_SDK_VERSION 10.13
-ENV MACOSX_DEPLOYMENT_TARGET 10.13
-
-RUN SDK_VERSION=$OSXCROSS_SDK_VERSION                           \ 
+RUN SDK_VERSION=$OSXCROSS_SDK_VERSION                           \
     mkdir /opt/osxcross &&                                      \
     cd /opt &&                                                  \
     git clone https://github.com/tpoechtrager/osxcross.git &&   \
-    cd osxcross &&                				\
-    cat /opt/osxcross/build.sh &&				\
+    cd osxcross &&                                              \
     git checkout c5ffd32171b3771ef6412e5ba2a6fd09e694294a &&    \
     sed -i -e 's|-march=native||g' ./build_clang.sh ./wrapper/build.sh && \
     ./tools/get_dependencies.sh &&                              \
@@ -48,6 +45,7 @@ RUN SDK_VERSION=$OSXCROSS_SDK_VERSION                           \
     yes | PORTABLE=true ./build.sh &&                           \
     ./build_compiler_rt.sh
     
+ENV MACOSX_DEPLOYMENT_TARGET 10.13
 ENV UNATTENDED 1
 ENV AR x86_64-apple-darwin17-ar
 ENV LD x86_64-apple-darwin17-ld
