@@ -34,6 +34,8 @@ RUN ln -f -s /usr/bin/clang-3.8 /usr/bin/clang	&& ln -f -s /usr/bin/clang++-3.8 
 ENV OSXCROSS_SDK_VERSION 10.13
 ENV MACOSX_DEPLOYMENT_TARGET 10.13
 
+RUN cat /opt/osxcross/build.sh
+
 RUN SDK_VERSION=$OSXCROSS_SDK_VERSION                           \ 
     mkdir /opt/osxcross &&                                      \
     cd /opt &&                                                  \
