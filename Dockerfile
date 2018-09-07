@@ -31,7 +31,7 @@ RUN ln -f -s /usr/bin/clang-3.8 /usr/bin/clang	&& ln -f -s /usr/bin/clang++-3.8 
 # built with `-march=native` on one of those may not run on every machine - I
 # ran into this problem when the images wouldn't run on my 2013-era Macbook
 # Pro.  As such, we remove this flag entirely.
-ENV OSXCROSS_SDK_VERSION 10.13
+ENV OSXCROSS_SDK_VERSION 10.12
 RUN SDK_VERSION=$OSXCROSS_SDK_VERSION                           \
     mkdir /opt/osxcross &&                                      \
     cd /opt &&                                                  \
@@ -41,21 +41,21 @@ RUN SDK_VERSION=$OSXCROSS_SDK_VERSION                           \
     sed -i -e 's|-march=native||g' ./build_clang.sh ./wrapper/build.sh && \
     ./tools/get_dependencies.sh &&                              \
     curl -L -o ./tarballs/MacOSX${OSXCROSS_SDK_VERSION}.sdk.tar.xz \
-    https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.13.sdk.tar.xz && \
+    https://github.com/phracker/MacOSX-SDKs/releases/download/10.12/MacOSX10.12.sdk.tar.xz && \
     yes | PORTABLE=true ./build.sh &&                           \
     ./build_compiler_rt.sh
     
-ENV MACOSX_DEPLOYMENT_TARGET 10.13
+ENV MACOSX_DEPLOYMENT_TARGET 10.12
 ENV UNATTENDED 1
-ENV AR x86_64-apple-darwin17-ar
-ENV LD x86_64-apple-darwin17-ld
-ENV CC x86_64-apple-darwin17-cc
-ENV CXX x86_64-apple-darwin17-c++
+ENV AR x86_64-apple-darwin16-ar
+ENV LD x86_64-apple-darwin16-ld
+ENV CC x86_64-apple-darwin16-cc
+ENV CXX x86_64-apple-darwin16-c++
 ENV PATH $PATH:/opt/osxcross/target/bin
 
 RUN osxcross-macports -v install boost && \
-    ln -s /opt/osxcross/target/bin/x86_64-apple-darwin17-otool /opt/osxcross/target/bin/otool && \
-    ln -s /opt/osxcross/target/bin/x86_64-apple-darwin17-install_name_tool /opt/osxcross/target/bin/install_name_tool
+    ln -s /opt/osxcross/target/bin/x86_64-apple-darwin16-otool /opt/osxcross/target/bin/otool && \
+    ln -s /opt/osxcross/target/bin/x86_64-apple-darwin16-install_name_tool /opt/osxcross/target/bin/install_name_tool
 
 RUN apt-add-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.8 main" && \
     apt-get update && \
